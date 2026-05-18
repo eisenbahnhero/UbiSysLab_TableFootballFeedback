@@ -4,6 +4,11 @@ Dieses Projekt implementiert ein modulares Audio-Feedback-System für einen Kick
 
 ---
 
+## Autoren:
+Justus Krell
+Michael Schmidt
+Maja Köster
+
 ## Module
 
 [Circuit-Diagramm](hardware/01_Circuit_diagram.pdf)
