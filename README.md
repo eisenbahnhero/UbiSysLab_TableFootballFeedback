@@ -6,7 +6,9 @@ Dieses Projekt implementiert ein modulares Audio-Feedback-System für einen Kick
 
 ## Autoren:
 Justus Krell
+<br>
 Michael Schmidt
+<br>
 Maja Köster
 
 ## Module
