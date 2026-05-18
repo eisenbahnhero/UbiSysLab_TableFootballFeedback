@@ -6,6 +6,9 @@ Dieses Projekt implementiert ein modulares Audio-Feedback-System für einen Kick
 
 ## Module
 
+[Circuit-Diagramm](hardware/01_Circuit_diagram.pdf)
+[Setup-Diagramm](hardware/02_Setup.pdf)
+
 ### TFF Master-Modul
 
 Das Master-Modul übernimmt die zentrale Steuerungslogik des Systems:
@@ -26,6 +29,7 @@ Das Master-Modul übernimmt die zentrale Steuerungslogik des Systems:
 
 An jedem TFF-Modul werden zwei Lautsprecher angeschlossen (je eine Ecke des Kickers). Das System besteht aus:
 
+[Setup-Diagramm](hardware/02_Setup.pdf)
 
 ## Kommunikation
 
