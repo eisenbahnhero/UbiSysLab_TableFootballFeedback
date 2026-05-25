@@ -6,6 +6,9 @@ DATA = Pin(13, Pin.OUT)
 CLK.high()
 DATA.low()
 
+led = Pin("LED", Pin.OUT)
+led.off()
+
 SLAVE_1 = 0x41
 SLAVE_2 = 0x42
 
@@ -40,12 +43,24 @@ def sende(adresse: int, befehl: int):
     CLK.high()
     utime.sleep_us(300)
 
-
+utime.sleep(4) # wait that the slaves are bootet
 while True:
-    sende(SLAVE_1, CMD_LED_AN)
-    sende(SLAVE_2, CMD_LED_AN)
-    utime.sleep(2)
-
+    led.on()
     sende(SLAVE_1, CMD_LED_AUS)
     sende(SLAVE_2, CMD_LED_AUS)
-    utime.sleep(2)
+    utime.sleep_ms(500)
+    
+    led.off()
+    sende(SLAVE_1, CMD_LED_AN)
+    sende(SLAVE_2, CMD_LED_AUS)
+    utime.sleep_ms(500)
+    
+    led.off()
+    sende(SLAVE_1, CMD_LED_AUS)
+    sende(SLAVE_2, CMD_LED_AN)
+    utime.sleep_ms(500)
+    
+    led.off()
+    sende(SLAVE_1, CMD_LED_AN)
+    sende(SLAVE_2, CMD_LED_AUS)
+    utime.sleep_ms(500)

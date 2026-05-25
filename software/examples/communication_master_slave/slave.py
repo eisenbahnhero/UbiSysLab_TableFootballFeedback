@@ -1,42 +1,44 @@
 from machine import Pin
 import utime
 
-SLAVE_ADRESSE = 0x41   # für Slave 2 auf 0x42 setzen
+SLAVE_ADRESSE = 0x41
 
 CMD_LED_AN  = 0x01
 CMD_LED_AUS = 0x00
 
-CLK  = Pin(6, Pin.IN, Pin.PULL_UP)
-DATA = Pin(7, Pin.IN, Pin.PULL_DOWN)
+CLK  = Pin(12, Pin.IN, Pin.PULL_UP)
+DATA = Pin(13, Pin.IN, Pin.PULL_DOWN)
 
 led = Pin("LED", Pin.OUT)
 led.off()
 
-def _warte_start() -> bool:
-    # Warte bis CLK LOW geht
-    timeout = 50_000
-    while CLK.value() == 1:
-        timeout -= 1
-        if timeout == 0:
+_TIMEOUT_US = 5_000
+
+def _warte_flanke(pin, zielwert: int) -> bool:
+    t = _TIMEOUT_US
+    while pin.value() != zielwert:
+        t -= 1
+        if t == 0:
             return False
         utime.sleep_us(1)
+    return True
 
+def _warte_start() -> bool:
+    if not _warte_flanke(CLK, 0):
+        return False
     utime.sleep_us(300)
     return CLK.value() == 0 and DATA.value() == 0
 
-def _byte_lesen() -> int:
+def _byte_lesen():
     byte = 0
     for _ in range(8):
-        while CLK.value() == 0:
-            pass
-        # Bit lesen wenn CLK HIGH
-        utime.sleep_us(100)
-        bit = DATA.value()
-        byte = (byte << 1) | bit
-        while CLK.value() == 1:
-            pass
+        if not _warte_flanke(CLK, 1):   # warte CLK HIGH
+            return None
+        utime.sleep_us(10)              # kurz stabilisieren
+        byte = (byte << 1) | DATA.value()
+        if not _warte_flanke(CLK, 0):   # warte CLK LOW
+            return None
     return byte
-
 
 print(f"Slave bereit – Adresse: 0x{SLAVE_ADRESSE:02X}")
 
@@ -45,10 +47,17 @@ while True:
         continue
 
     adresse = _byte_lesen()
-    befehl  = _byte_lesen()
+    if adresse is None:
+        print("Timeout beim Adress-Byte – Reset")
+        continue
+
+    befehl = _byte_lesen()
+    if befehl is None:
+        print("Timeout beim Befehls-Byte – Reset")
+        continue
 
     if adresse != SLAVE_ADRESSE:
-        continue 
+        continue
 
     print(f"Adresse 0x{adresse:02X}  Befehl 0x{befehl:02X}")
 
