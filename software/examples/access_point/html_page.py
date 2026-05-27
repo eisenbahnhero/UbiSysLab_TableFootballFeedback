@@ -7,21 +7,30 @@ def html_page():
         <title>Kicker TFF Interface</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
-            body { font-family: Arial; text-align: center; margin-top: 50px; background-color: #222; color: white;}
-            .btn { display: block; width: 80%; max-width: 300px; padding: 20px; margin: 15px auto; 
-                   font-size: 20px; background-color: #28a745; color: white; border: none; border-radius: 10px; cursor: pointer;}
-            .btn:active { background-color: #218838; }
+            body { font-family: Arial; text-align: center; margin-top: 10px; background-color: #222; color: white;}
+            .btn { display: block; width: 90%; max-width: 350px; padding: 15px; margin: 8px auto; 
+                   font-size: 18px; color: white; border: none; border-radius: 8px; cursor: pointer;}
+            .btn:active { opacity: 0.7; }
+            .btn-green { background-color: #28a745; }
             .btn-blue { background-color: #007bff; }
+            .btn-red { background-color: #dc3545; }
+            .btn-yellow { background-color: #ffc107; color: black; }
+            .btn-purple { background-color: #6f42c1; }
         </style>
     </head>
     <body>
         <h1>TFF Controller</h1>
-        <form action="/laola"><button class="btn btn-green">Laola Welle</button></form>
-        <form action="/anpfiff"><button class="btn btn-green">Anpfiff!</button></form>
+        <form action="/anpfiff"><button class="btn btn-green">Anpfiff Pfeife</button></form>
+        <form action="/jubel"><button class="btn btn-green">Tor Jubel</button></form>
+        <form action="/awww"><button class="btn btn-green">Awww (Schade)</button></form>
         <hr style="border-color: #444; width: 80%;">
-        <form action="/schiri"><button class="btn btn-yellow">Schiri, der hat schon Gelb!</button></form>
+        <form action="/ger"><button class="btn btn-blue">Hymne DE</button></form>
+        <form action="/fcb"><button class="btn btn-blue">Hymne FC Bayern</button></form>
+        <hr style="border-color: #444; width: 80%;">
+        <form action="/laola"><button class="btn btn-red">Laola Welle</button></form>
+        <form action="/schiri"><button class="btn btn-red">Schiri, der hat schon Gelb!</button></form>
         <form action="/boo"><button class="btn btn-red">Boo (Ausbuhen)</button></form>
-        <form action="/grillen"><button class="btn btn-green">Grillen Zirpen</button></form>
+        <form action="/grillen"><button class="btn btn-red">Grillen Zirpen</button></form>
     </body>
     </html>
     """
