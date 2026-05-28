@@ -104,11 +104,11 @@ def spiele_grillen():
 def spiele_laola_welle():
     # Sequentielles Abspielen
     player_vl.play_folder(3, 1)
-    utime.sleep_ms(300)
+    time.sleep_ms(300)
     player_hl.play_folder(3, 1)
-    utime.sleep_ms(300)
+    time.sleep_ms(300)
     sende(SLAVE_ADRESSE, CMD_LAOLA_HR)
-    utime.sleep_ms(300)
+    time.sleep_ms(300)
     sende(SLAVE_ADRESSE, CMD_LAOLA_VR)
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -116,7 +116,7 @@ s.bind(('', 80))
 s.listen(5)
 s.settimeout(0.2)
 
-utime.sleep(2) 
+time.sleep(2) 
 print("System bereit. Warte auf Eingabe...")
 
 while True:
@@ -124,7 +124,6 @@ while True:
         conn, addr = s.accept()
         request = conn.recv(1024).decode('utf-8')
         
-        led.on()
         if '/anpfiff' in request:
             print("Web: Anpfiff")
             spiele_anpfiff()
@@ -161,10 +160,9 @@ while True:
             print("Web: Grillen")
             spiele_grillen()
             
-        response = 'HTTP/1.1 200 OK\nContent-Type: text/html\n\n' + hole_html()
+        response = 'HTTP/1.1 200 OK\nContent-Type: text/html\n\n' + html_page()
         conn.sendall(response.encode('utf-8'))
         conn.close()
-        led.off()
         
     except OSError:
         pass
