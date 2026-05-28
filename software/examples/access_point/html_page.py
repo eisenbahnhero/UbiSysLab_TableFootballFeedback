@@ -1,5 +1,3 @@
-import socket
-
 def html_page():
     return """<!DOCTYPE html>
     <html>
@@ -23,6 +21,7 @@ def html_page():
         <form action="/anpfiff"><button class="btn btn-green">Anpfiff Pfeife</button></form>
         <form action="/jubel"><button class="btn btn-green">Tor Jubel</button></form>
         <form action="/awww"><button class="btn btn-green">Awww (Schade)</button></form>
+        <form action="/goal"><button class="btn btn-green">Goal Sound</button></form>
         <hr style="border-color: #444; width: 80%;">
         <form action="/ger"><button class="btn btn-blue">Hymne DE</button></form>
         <form action="/fcb"><button class="btn btn-blue">Hymne FC Bayern</button></form>
@@ -34,135 +33,3 @@ def html_page():
     </body>
     </html>
     """
-
-CLK  = Pin(13, Pin.OUT)  # SCL
-DATA = Pin(12, Pin.OUT)  # SDA
-CLK.high()
-DATA.low()
-
-player_vl = DFPlayer(uart_id=0, tx=16, rx=17)
-player_hl = DFPlayer(uart_id=1, tx=4, rx=5)   
-player_vl.volume(20)
-player_hl.volume(20)
-
-SLAVE_ADRESSE = 0x41
-HALB = 200
-
-CMD_ANPFIFF   = 0x10
-CMD_JUBEL     = 0x11
-CMD_AWWW      = 0x12
-CMD_HYMNE_GER = 0x20
-CMD_HYMNE_FCB = 0x21
-CMD_SCHIRI    = 0x40
-CMD_BOO       = 0x41
-CMD_GRILLEN   = 0x42
-
-# Spezielle Befehle für Laola
-CMD_LAOLA_HR  = 0x31
-CMD_LAOLA_VR  = 0x32
-
-def spiele_anpfiff():
-    player_vl.play_folder(1, 1)
-    player_hl.play_folder(1, 1)
-    sende(SLAVE_ADRESSE, CMD_ANPFIFF)
-
-def spiele_jubel():
-    player_vl.play_folder(1, 2)
-    player_hl.play_folder(1, 2)
-    sende(SLAVE_ADRESSE, CMD_JUBEL)
-
-def spiele_awww():
-    player_vl.play_folder(1, 3)
-    player_hl.play_folder(1, 3)
-    sende(SLAVE_ADRESSE, CMD_AWWW)
-
-def spiele_hymne_ger():
-    player_vl.play_folder(2, 1)
-    player_hl.play_folder(2, 1)
-    sende(SLAVE_ADRESSE, CMD_HYMNE_GER)
-
-def spiele_hymne_fcb():
-    player_vl.play_folder(2, 2)
-    player_hl.play_folder(2, 2)
-    sende(SLAVE_ADRESSE, CMD_HYMNE_FCB)
-
-def spiele_schiri():
-    player_vl.play_folder(4, 1)
-    player_hl.play_folder(4, 1)
-    sende(SLAVE_ADRESSE, CMD_SCHIRI)
-
-def spiele_boo():
-    player_vl.play_folder(4, 2)
-    player_hl.play_folder(4, 2)
-    sende(SLAVE_ADRESSE, CMD_BOO)
-
-def spiele_grillen():
-    player_vl.play_folder(4, 3)
-    player_hl.play_folder(4, 3)
-    sende(SLAVE_ADRESSE, CMD_GRILLEN)
-
-def spiele_laola_welle():
-    # Sequentielles Abspielen
-    player_vl.play_folder(3, 1)
-    time.sleep_ms(300)
-    player_hl.play_folder(3, 1)
-    time.sleep_ms(300)
-    sende(SLAVE_ADRESSE, CMD_LAOLA_HR)
-    time.sleep_ms(300)
-    sende(SLAVE_ADRESSE, CMD_LAOLA_VR)
-
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind(('', 80))
-s.listen(5)
-s.settimeout(0.2)
-
-time.sleep(2) 
-print("System bereit. Warte auf Eingabe...")
-
-while True:
-    try:
-        conn, addr = s.accept()
-        request = conn.recv(1024).decode('utf-8')
-        
-        if '/anpfiff' in request:
-            print("Web: Anpfiff")
-            spiele_anpfiff()
-            
-        elif '/jubel' in request:
-            print("Web: Jubel")
-            spiele_jubel()
-            
-        elif '/awww' in request:
-            print("Web: Awww")
-            spiele_awww()
-            
-        elif '/ger' in request:
-            print("Web: Hymne DE")
-            spiele_hymne_ger()
-            
-        elif '/fcb' in request:
-            print("Web: Hymne FCB")
-            spiele_hymne_fcb()
-            
-        elif '/laola' in request:
-            print("Web: Laola")
-            spiele_laola_welle()
-            
-        elif '/schiri' in request:
-            print("Web: Schiri")
-            spiele_schiri()
-            
-        elif '/boo' in request:
-            print("Web: Boo")
-            spiele_boo()
-            
-        elif '/grillen' in request:
-            print("Web: Grillen")
-            spiele_grillen()
-            
-        response = 'HTTP/1.1 200 OK\nContent-Type: text/html\n\n' + html_page()
-        conn.sendall(response.encode('utf-8'))
-        conn.close()
-        
-    except OSError:
-        pass
