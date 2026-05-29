@@ -1,0 +1,14 @@
+Dir		File	Sound
+01		001		Anpfiff
+01		002		Jubel
+01		003		Aww
+01		004		Goal
+
+02		001		Torhymne DE (Major Tom)
+02		002		Torhymne FC Bayern
+
+03		001		Laola
+
+04		001 	Boo
+04		002		Grillen
+04		003		Schiri, der hat schon gelb

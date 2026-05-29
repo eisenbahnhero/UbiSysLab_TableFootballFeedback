@@ -62,9 +62,9 @@ while True:
     elif ccmd == CMD['GOAL']: spiele_alle(1, 4)
     elif ccmd == CMD['HYMNE_GER']: spiele_alle(2, 1)
     elif ccmd == CMD['HYMNE_FCB']: spiele_alle(2, 2)
-    elif ccmd == CMD['SCHIRI']: spiele_alle(4, 1)
-    elif ccmd == CMD['BOO']: spiele_alle(4, 2)
-    elif ccmd == CMD['GRILLEN']: spiele_alle(4, 3)
+    elif ccmd == CMD['BOO']: spiele_alle(4, 1)
+    elif ccmd == CMD['GRILLEN']: spiele_alle(4, 2)
+    elif ccmd == CMD['SCHIRI']: spiele_alle(4, 3)
     
     elif ccmd == CMD['LAOLA_HR']: 
         player_1.play_folder(3, 1)
