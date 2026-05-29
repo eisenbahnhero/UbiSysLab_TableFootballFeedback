@@ -3,36 +3,67 @@
     <head>
         <title>Kicker TFF Interface</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="UTF-8">
         <style>
-            body { font-family: Arial; text-align: center; margin-top: 10px; background-color: #222; color: white;}
-            .btn { display: block; width: 90%; max-width: 350px; padding: 15px; margin: 8px auto; 
-                   font-size: 18px; color: white; border: none; border-radius: 8px; cursor: pointer;}
-            .btn:active { opacity: 0.7; }
-            .btn-green { background-color: #28a745; }
-            .btn-blue { background-color: #007bff; }
-            .btn-red { background-color: #dc3545; }
-            .btn-yellow { background-color: #ffc107; color: black; }
-            .btn-purple { background-color: #6f42c1; }
+            body{font-family:Arial;text-align:center;margin-top:10px;background-color:#222;color:white}
+            .btn{display:block;width:90%;max-width:350px;padding:15px;margin:8px auto;font-size:18px;color:white;border:none;border-radius:8px;cursor:pointer;text-decoration:none}
+            .btn:active{opacity:0.7}
+            .btn-green{background-color:#28a745}
+            .btn-blue{background-color:#007bff}
+            .btn-red{background-color:#dc3545}
+            .btn-yellow{background-color:#ffc107;color:black}
+            .btn-purple{background-color:#6f42c1}
+            .volume-box{width:90%;max-width:350px;margin:16px auto;background:#333;border-radius:10px;padding:14px 20px;box-sizing:border-box}
+            .volume-box label{font-size:15px;color:#ccc;display:block;margin-bottom:10px}
+            .volume-row{display:flex;align-items:center;gap:12px}
+            .volume-row input[type=range]{flex:1;accent-color:#ffc107;height:6px;cursor:pointer}
+            .volume-val{font-size:18px;font-weight:bold;color:#ffc107;min-width:28px;text-align:right}
+            .tick-labels{display:flex;justify-content:space-between;font-size:11px;color:#888;margin-top:4px;padding:0 2px}
         </style>
     </head>
     <body>
         <h1>TFF Controller</h1>
 		
-        <form action="/anpfiff"><button class="btn btn-green">Anpfiff Pfeife</button></form>
-        <form action="/jubel"><button class="btn btn-green">Tor Jubel</button></form>
-        <form action="/awww"><button class="btn btn-green">Awww (Schade)</button></form>
-        <form action="/goal"><button class="btn btn-green">Goal Sound</button></form>
-		
-        <hr style="border-color: #444; width: 80%;">
-		
-        <form action="/ger"><button class="btn btn-blue">Hymne DE</button></form>
-        <form action="/fcb"><button class="btn btn-blue">Hymne FC Bayern</button></form>
-		
-        <hr style="border-color: #444; width: 80%;">
-		
-        <form action="/laola"><button class="btn btn-red">Laola Welle</button></form>
-        <form action="/schiri"><button class="btn btn-red">Schiri, der hat schon Gelb!</button></form>
-        <form action="/boo"><button class="btn btn-red">Boo (Ausbuhen)</button></form>
-        <form action="/grillen"><button class="btn btn-red">Grillen Zirpen</button></form>
+        <div class="volume-box">
+        <label for="vol">🔊 Lautstärke</label>
+        <div class="volume-row">
+            <span style="font-size:13px;color:#888">0</span>
+            <input type="range" id="vol" min="0" max="30" step="5" value="{{VOLUME}}" oninput="updateVol(this.value)">
+            <span style="font-size:13px;color:#888">30</span>
+            <span class="volume-val" id="volVal">{{VOLUME}}</span>
+        </div>
+        </div>
+
+        <hr style="border-color:#444;width:80%">
+
+        <button class="btn btn-green" onclick="sendCommand('anpfiff')">Anpfiff Pfeife</button>
+        <button class="btn btn-green" onclick="sendCommand('jubel')">Tor Jubel</button>
+        <button class="btn btn-green" onclick="sendCommand('awww')">Awww (Schade)</button>
+        <button class="btn btn-green" onclick="sendCommand('goal')">Goal Sound</button>
+
+        <hr style="border-color:#444;width:80%">
+
+        <button class="btn btn-blue" onclick="sendCommand('ger')">Hymne DE</button>
+        <button class="btn btn-blue" onclick="sendCommand('fcb')">Hymne FC Bayern</button>
+
+        <hr style="border-color:#444;width:80%">
+
+        <button class="btn btn-red" onclick="sendCommand('laola')">Laola Welle</button>
+        <button class="btn btn-red" onclick="sendCommand('schiri')">Schiri, der hat schon Gelb!</button>
+        <button class="btn btn-red" onclick="sendCommand('boo')">Boo (Ausbuhen)</button>
+        <button class="btn btn-red" onclick="sendCommand('grillen')">Grillen Zirpen</button>
+
+        <script>
+            function updateVol(v){
+                document.getElementById('volVal').textContent = v;
+                fetch('/volume?v=' + v);
+                location.reload();
+            }
+
+            function sendCommand(cmd){
+                fetch('/' + cmd);
+                location.reload();
+            }
+        </script>
     </body>
 </html>

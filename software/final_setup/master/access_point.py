@@ -7,10 +7,16 @@ class AccessPoint:
         self.password = password
         self.essid = essid
         self._socket = None
+        self._volume = "20"
 
     def get_html_page(self):
         with open("page.html", "r") as f:
-            return f.read()
+            html = f.read()
+            html = html.replace("{{VOLUME}}", self._volume)
+            return html
+
+    def set_volume(self, volume: int):
+        self._volume = str(volume)
 
     def wap_create(self):
         rp2.country('DE')
